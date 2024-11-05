@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  nginx:
+    build: ./requirements/nginx/.
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      # - ./web:/var/www/html
+      - wp_data:/var/www/html
+    networks:
+      - inception_network
+    # restart: always
+  wordpress:
+    build: ./requirements/wordpress/.
+    container_name: wordpress
+    volumes:
+      # - ./web:/var/www/html
+      - wp_data:/var/www/html
+    networks:
+      - inception_network
+    depends_on:
+      - mariadb
+    env_file:
+      - .env.temp
+    # restart: always
+  mariadb:
+    build: ./requirements/mariadb/.
+    container_name: mariadb
+    networks:
+      - inception_network
+    # restart: always
+    env_file:
+      - .env.temp
+    volumes:
+      - db_data:/var/lib/mysql
+
+networks:
+  inception_network:
+
+volumes:
+  db_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/imisumi-wsl/dev/Inception/db_data
+      o: bind
+  wp_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/imisumi-wsl/dev/Inception/wp_data
+      o: bind
