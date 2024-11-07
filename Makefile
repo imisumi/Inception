@@ -43,6 +43,10 @@ status:
 
 # Restart all services (clean start)
 re: clean up
+# re: clean
+# 	mkdir -p $(WP_DATA)
+# 	mkdir -p $(DB_DATA)
+# 	docker-compose -f $(DCOMPOSE_FILE) up --build --no-cache -d
 
 reload: down up
 
