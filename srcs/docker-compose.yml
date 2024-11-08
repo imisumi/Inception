@@ -2,21 +2,26 @@ version: "3.8"
 
 services:
   nginx:
-    build: ./requirements/nginx/.
+    build:
+      context: ./requirements/nginx
+      dockerfile: Dockerfile
     container_name: nginx
+    restart: always
     ports:
       - "80:80"
+      - "443:443"
     volumes:
-      # - ./web:/var/www/html
       - wp_data:/var/www/html
     networks:
       - inception_network
-    # restart: always
+
   wordpress:
-    build: ./requirements/wordpress/.
+    build:
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
     container_name: wordpress
+    restart: always
     volumes:
-      # - ./web:/var/www/html
       - wp_data:/var/www/html
     networks:
       - inception_network
@@ -24,13 +29,15 @@ services:
       - mariadb
     env_file:
       - .env.temp
-    # restart: always
+
   mariadb:
-    build: ./requirements/mariadb/.
+    build:
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile
     container_name: mariadb
+    restart: always
     networks:
       - inception_network
-    # restart: always
     env_file:
       - .env.temp
     volumes:
